@@ -9,7 +9,7 @@ $(function() {
       }
 
 //PUT request
-  $.ajax("/api/burgers" + id, 
+  $.ajax("/api/burgers/" + id, 
   {
       type: "PUT",
       data: burgerDevoured
@@ -22,16 +22,16 @@ $(function() {
   });
 
   // Submitting new Burgers
-  $(".create-form"),on("submit", (event) => {
+  $(".create-form").on("submit", (event) => {
       event.preventDefault();
 
       var newBurger = 
       {
-          name: $("burgerInput").val().trim(),
+          name: $("burgerInput").val(),
           devoured: false
       }
 
-      $.ajax("/api/cats", {
+      $.ajax("/api/burgers", {
           type: "POST",
           data: newBurger
       }).then(() => {
@@ -41,7 +41,7 @@ $(function() {
   })
   });
 
-  $("$devour-burger").on("click", (event) => {
+  $(".devour-burger").on("click", (event) => {
       event.preventDefault();
       
       var id = $(this).data("id")

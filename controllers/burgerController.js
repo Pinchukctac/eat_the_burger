@@ -17,7 +17,7 @@ router.get('/', function (req, res)
 });
 
 // Create a New Burger
-router.post('/burger/create', function (req, res) {
+router.post('/burgers/create', function (req, res) {
   burger.insertOne(
     [
       "burger_name",
@@ -34,7 +34,7 @@ router.post('/burger/create', function (req, res) {
   });
 
 // Devour a Burger
-router.post('/api/burger/:id', function (req, res){
+router.post('/api/burgers/:id', function (req, res){
   var condition = "id =" + req.params.id;
 
   burger.updateOne(
