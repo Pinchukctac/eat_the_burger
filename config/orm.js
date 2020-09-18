@@ -1,101 +1,75 @@
-// Import MySQL connection.
-var connection = require("../config/connection.js");
+//Dependencies
+var connection = require("./connection");
 
-function printQuestionMarks(num) {
-  var arr = [];
 
-  for (var i = 0; i < num; i++) {
-    arr.push("?");
-  }
+//Function for SQL syntax
+function printQuestionMarks(input) {
+    var array = [];
 
-  return arr.toString();
-}
-
-// Helper function to convert object key/value pairs to SQL syntax
-function objToSql(ob) {
-  var arr = [];
-
-  // loop through the keys and push the key/value as a string int arr
-  for (var key in ob) {
-    var value = ob[key];
-    // check to skip hidden properties
-    if (Object.hasOwnProperty.call(ob, key)) {
-      
-      if (typeof value === "string" && value.indexOf(" ") >= 0) {
-        value = "'" + value + "'";
-      }
-
-      arr.push(key + "=" + value);
+    for (var i = 0; i < input; i++) {
+        array.push("?");
     }
-  }
 
-  // translate array of strings to a single comma-separated string
-  return arr.toString();
+    return array.toString()
 }
 
-// Object for all our SQL statement functions.
+//Function to convert key/value pairs
+function objToSql(obj) {
+    var arr = [];
+
+    for (var key in obj) {
+        var value = obj[key];
+
+        if (Object.hasOwnProperty.call(obj, key)) {
+            if (typeof value === "string" && value.indexOf(" ") >= 0) {
+                value = "'" + value + "'";
+            }
+            arr.push(key + "=" + value);
+
+        }
+            return arr.toString();
+    }
+}
+
+
+//ORM Functions
 var orm = {
-  all: function(tableInput, cb) {
-    var queryString = "SELECT * FROM " + tableInput + ";";
-    connection.query(queryString, function(err, result) {
-      if (err) {
-        throw err;
-      }
-      cb(result);
-    });
-  },
-  create: function(table, cols, vals, cb) {
-    var queryString = "INSERT INTO " + table;
+    selectAll: function(tableInput, cb) {
+        var qs = "SELECT * FROM " + tableInput + ";";
+        connection.query(qs, function(err, results) {
+            if (err) {
+                throw err
+            }
+            cb(results);
+        });
+    },
+    insertOne: function(table, cols, vals, cb) {
+        var qs = "INSERT INTO " + table;
+        qs += " (" + cols.toString() + ") VALUES (";
+        qs += printQuestionMarks(vals.length) + ") ";
+        console.log(qs);
 
-    queryString += " (";
-    queryString += cols.toString();
-    queryString += ") ";
-    queryString += "VALUES (";
-    queryString += printQuestionMarks(vals.length);
-    queryString += ") ";
+        connection.query(qs, vals, function(err, results) {
+            if (err) {
+                throw err;
+            }
+            cb(results);
+        })
 
-    console.log(queryString);
+    },
+    updateOne: function(table, objColVals, condition, cb) {
+        var qs = "UPDATE " + table + " SET ";
+        qs += objToSql(objColVals) + " WHERE " + condition;
+        console.log(qs);
 
-    connection.query(queryString, vals, function(err, result) {
-      if (err) {
-        throw err;
-      }
+        connection.query(qs, function(err, results) {
+            if (err) {
+                throw err
+            }
 
-      cb(result);
-    });
-  },
-  // An example of objColVals would be {name: panther, sleepy: true}
-  update: function(table, objColVals, condition, cb) {
-    var queryString = "UPDATE " + table;
+            cb(results);
+        })
+    }
+}
 
-    queryString += " SET ";
-    queryString += objToSql(objColVals);
-    queryString += " WHERE ";
-    queryString += condition;
-
-    console.log(queryString);
-    connection.query(queryString, function(err, result) {
-      if (err) {
-        throw err;
-      }
-
-      cb(result);
-    });
-  },
-  delete: function(table, condition, cb) {
-    var queryString = "DELETE FROM " + table;
-    queryString += " WHERE ";
-    queryString += condition;
-
-    connection.query(queryString, function(err, result) {
-      if (err) {
-        throw err;
-      }
-
-      cb(result);
-    });
-  }
-};
-
-// Export the orm object for the model (burger.js).
 module.exports = orm;
