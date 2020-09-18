@@ -8,7 +8,7 @@ var burger = require('../models/burger.js');
 // Index Redirect
 router.get('/', function (req, res) 
 {
-  burger.selectAll(function(data) 
+  burger.all(function(data) 
   {
     var hbsObject = { burger: data };
     //console.log(hbsObject);
@@ -35,7 +35,7 @@ router.post('/burger/create', function (req, res) {
 
 // Devour a Burger
 router.post('/api/burger/:id', function (req, res){
-  var condition = "id =" = req.params.id;
+  var condition = "id =" + req.params.id;
 
   burger.updateOne(
     {devoured: req.body.devoured},
