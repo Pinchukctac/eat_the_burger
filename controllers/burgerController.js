@@ -8,12 +8,6 @@ var burger = require('../models/burger.js');
 // Index Redirect
 router.get('/', function (req, res) 
 {
-  res.redirect('/index');
-});
-
-// Index Page 
-router.get('/index', function (req, res) 
-{
   burger.selectAll(function(data) 
   {
     var hbsObject = { burgers: data };
@@ -23,20 +17,34 @@ router.get('/index', function (req, res)
 });
 
 // Create a New Burger
-router.post('/burger/create', function (req, res) 
-{
-  burger.insertOne(req.body.burger_name, function() 
-  {
-    res.redirect('/index');
+router.post('/burger/create', function (req, res) {
+  burger.insertOne(
+    [
+      "burger_name",
+      "devoured"
+    ],
+    [
+      req.body.burger_name,
+      req.body.devoured
+    ],
+
+    function (result) {
+      res.json({ id: result.insertId });
+    });
   });
-});
 
 // Devour a Burger
-router.post('/burger/eat/:id', function (req, res) 
-{
-  burger.updateOne(req.params.id, function() 
-  {
-    res.redirect('/index');
+router.post('/api/burger/:id', function (req, res){
+  var condition = "id =" = req.params.id;
+
+  burger.updateOne(
+    {devoured: req.body.devoured},
+    condition, function (result) {
+      if (result.changedRows === 0) {
+        return res.status(404).end();
+      } else {
+        res.status(200).end();
+    }
   });
 });
 
