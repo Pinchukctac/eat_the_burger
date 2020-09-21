@@ -25,11 +25,11 @@
             </div>
             <div class="panel-body">
                 <ul>
-                    {{#each burgers}}
+                    {{#each burger}}
                     {{#unless devoured}}
                     <div class="card">
-                        <p id="new-burger">{{id}}.{{burger_name}}</p>
-                        <button type="button" id="devour-burger" class="btn btn-outline-success">Devour</button>
+                        <p>{{id}}.{{burger_name}}</p>
+                        <button type="button" data-crap={{this.id}} class="btn btn-outline-success devour-burger">Devour</button>
                     </div>
                     {{/unless}}
                     {{/each}}

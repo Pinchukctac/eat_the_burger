@@ -8,23 +8,24 @@ var burger = require('../models/burger.js');
 // Index Redirect
 router.get('/', function (req, res) 
 {
-  burger.all(function(data) 
+  burger.selectAll(function(data) 
   {
     var hbsObject = { burger: data };
-    //console.log(hbsObject);
+    console.log(hbsObject);
     res.render('index', hbsObject);
   });
 });
 
 // Create a New Burger
-router.post('/burgers/create', function (req, res) {
+router.post('/api/burgers/create', function (req, res) {
+  console.log(req.body);
   burger.insertOne(
     [
       "burger_name",
       "devoured"
     ],
     [
-      req.body.burger_name,
+      req.body.name,
       req.body.devoured
     ],
 
