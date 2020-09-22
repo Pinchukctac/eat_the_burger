@@ -35,10 +35,10 @@ router.post('/api/burgers/create', function (req, res) {
   });
 
 // Devour a Burger
-router.post('/api/burgers/:id', function (req, res){
+router.put('/api/burgers/:id', function (req, res){
   var condition = "id =" + req.params.id;
 
-  burger.updateOne(
+  burger.update(
     {devoured: req.body.devoured},
     condition, function (result) {
       if (result.changedRows === 0) {

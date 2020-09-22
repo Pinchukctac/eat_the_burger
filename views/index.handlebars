@@ -27,10 +27,10 @@
                 <ul>
                     {{#each burger}}
                     {{#unless devoured}}
-                    <div class="card">
-                        <p>{{id}}.{{burger_name}}</p>
-                        <button type="button" data-crap={{this.id}} class="btn btn-outline-success devour-burger">Devour</button>
-                    </div>
+                    
+                    <p>{{id}}.{{burger_name}}</p>
+                    <button type="button" data-id={{this.id}} class="btn btn-outline-success devour">Devour</button>
+
                     {{/unless}}
                     {{/each}}
                 </ul>

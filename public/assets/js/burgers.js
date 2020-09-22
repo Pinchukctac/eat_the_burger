@@ -1,8 +1,7 @@
 $(function() {
-  $(document).on("click", ".devour-burger", (event) => {
-    event.preventDefault();
-    console.log($(this).text());
-      var id = $(this).attr("data-crap");
+    $(".devour").on("click", function(event) {
+        event.preventDefault();
+        var id = $(this).data("id");
       var newDevoured = $(this).data("newdevoured");
 console.log(id);
       var burgerDevoured = 
@@ -43,20 +42,5 @@ console.log(id);
   })
   });
 
-//   $(".devour-burger").on("click", (event) => {
-//       event.preventDefault();
-      
-//       var id = $(this).data("id")
-
-//       $.ajax("/api/burgers/" + id, 
-//       {
-//           type:"POST",
-//           data:devouredBurger
-//       }).then(() => {
-
-//           console.log("Burger Devoured", id);
-//       t
-//       location.reload();
-//       })
-//   })
+//   
 })
